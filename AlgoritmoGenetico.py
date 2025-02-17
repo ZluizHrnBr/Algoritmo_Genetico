@@ -21,9 +21,7 @@ pesos_prioridade = {
     1: 1   # Baixa prioridade tem peso 1
 }
 
-# Variáveis para monitoramento
-tempo_por_geracao = []
-combinacoes_realizadas_por_geracao = []
+
 start_time = time.time()
 
 # Função de fitness
@@ -36,9 +34,9 @@ def fitness_func(ga_instance,solution, solution_idx):
     for _, aluno in equipe.iterrows():
         # Verificar as habilidades do aluno em relação às prioridades
         for prioridade, habilidades in habilidades_prioridade.items():
-            for habilidade in habilidades:
+            for habilidade_equipe in habilidades:
                 # Verificar se o aluno possui a habilidade (valor > 0)
-                if aluno[habilidade] > 0:
+                if aluno[habilidade_equipe] > 0:
                     fitness += pesos_prioridade[prioridade]  # Soma o peso da prioridade
 
     return fitness
@@ -58,11 +56,6 @@ ga_instance = pygad.GA(
     mutation_percent_genes=10,
     on_generation=lambda ga: track_progress(ga)
 )
-
-# Função para rastrear o tempo por geração
-def track_progress(ga_instance):
-    tempo_por_geracao.append(time.time() - start_time)
-    combinacoes_realizadas_por_geracao.append(ga_instance.generations_completed)
 
 inicio = time.time()
 # Executa o GA
